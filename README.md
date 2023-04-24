@@ -48,8 +48,8 @@ pip install -r requirements.txt
 
 
 1. Зайти в @botfather, создать бота и записать токен
-2. Запустить ./ngrok http 8000 скопировать урл
-3. Взять токен и урл и положить в bot/consts.py
+2. Запустить `./ngrok http 8000` скопировать урл
+3. Взять токен и урл и положить в `bot/consts.py`
    ```
    TOKEN = "6273372078:AAF8dC4SEhmaK1sJpQiSFEkNd00mGt-L_ew"
    HOST = "https://6a45-185-172-136-20.ngrok-free.app"
@@ -65,7 +65,7 @@ pip install -r requirements.txt
 2. Делаем ssh ключ чтобы делать git pull без логина и пароля
     1. В терминале запускаем ssh-keygen
     2. Прожимаем везде enter (без пароля и тд)
-    3. делаем cat /root/.ssh/id_rsa.pub и то что выпало вставляем у себя в гитхабе в разделе с ключами https://github.com/settings/keys
+    3. делаем `cat /root/.ssh/id_rsa.pub` и то что выпало вставляем у себя в гитхабе в разделе с ключами https://github.com/settings/keys
 3. Делаем git clone по ssh
 4. Настройка https на сервере
     1. Установка nginx 
@@ -91,7 +91,7 @@ pip install -r requirements.txt
         4. Рестартуем nginx `sudo systemctl restart nginx`
 
     3. Получаем SSL сертификат
-        1. Установим certbot от Let's Encrypt: sudo apt-get install certbot python3-certbot-nginx
+        1. Установим certbot от Let's Encrypt: `sudo apt-get install certbot python3-certbot-nginx`
 
         2. Произведем первичную настройку certbot: `sudo certbot certonly --nginx`
 
