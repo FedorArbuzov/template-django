@@ -66,7 +66,7 @@ pip install -r requirements.txt
     1. В терминале запускаем `ssh-keygen`
     2. Прожимаем везде enter (без пароля и тд)
     3. делаем `cat /root/.ssh/id_rsa.pub` и то что выпало вставляем у себя в гитхабе в разделе с ключами https://github.com/settings/keys
-3. Делаем git clone по ssh
+3. Делаем `git clone` по ssh
 4. Настройка https на сервере
     1. Установка nginx 
         ```
