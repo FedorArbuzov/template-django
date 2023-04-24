@@ -74,13 +74,13 @@ pip install -r requirements.txt
             apt-get install nginx
         ```
     2. Создаем конфиг для nginx в /etc/nginx/sites-available/
-        1. cd /etc/nginx/sites-available/
-        2. nano <ваш домен>
+        1. `cd /etc/nginx/sites-available/`
+        2. `nano <ваш домен напримен nabot>`
         3. Сам конфиг
             ```
                 server {
                     listen 80;
-                    server_name <ваш домен>;
+                    server_name <ваш домен nabot.ru>;
                     
                     location / {
                         include proxy_params;
