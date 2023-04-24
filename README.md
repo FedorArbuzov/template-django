@@ -159,5 +159,5 @@ pip install -r requirements.txt
         WantedBy=multi-user.target
         ```
         3. `systemctl daemon-reload`
-        4. `systemctl daemon-reload`
+        4. `systemctl start server.service`
 
