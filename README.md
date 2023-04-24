@@ -63,7 +63,7 @@ pip install -r requirements.txt
 
 1. Заходим по ssh на свою виртуалку по логину и паролю
 2. Делаем ssh ключ чтобы делать git pull без логина и пароля
-    1. В терминале запускаем ssh-keygen
+    1. В терминале запускаем `ssh-keygen`
     2. Прожимаем везде enter (без пароля и тд)
     3. делаем `cat /root/.ssh/id_rsa.pub` и то что выпало вставляем у себя в гитхабе в разделе с ключами https://github.com/settings/keys
 3. Делаем git clone по ssh
