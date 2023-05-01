@@ -3,7 +3,7 @@ import openai
 from bot.models import Settings, Proile, Dialogs, Messages
 from bot.send_message import send_gpt_response, send_pure_text_message, send_start_message
 
-openai.api_key = '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'
+openai.api_key = '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'
 
 
 def chat_gpt_request(settings, profile, messages, text):

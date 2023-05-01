@@ -26,6 +26,7 @@ SECRET_KEY = 'gklxdf@x6%te^tj%or!vlts_q+aks8k*4jurr&3^e8yq&$0n4-'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = ['https://nabot.ru']
 
 
 # Application definition
