@@ -1,2 +1,4 @@
 Django
 requests
+python-telegram-bot
+openai
