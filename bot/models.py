@@ -15,6 +15,7 @@ class Settings(models.Model):
     you_not_subscribed_message = models.TextField(default='Вы еще не подписаны, подпишитесь пожалуйста')
     subscribe_please_message = models.TextField(default='Подпишитесь пожалуйста на @test_gpt')
 
+    max_gpt_context_limit = models.TextField(default='Достигнуто ограничение по числу сообщений в диалоге, попробуйте задать вопрос в новом диалоге')
     start_dialog = models.CharField(default='Начать диалог', max_length=100)
     profile = models.CharField(default='Профиль', max_length=100)
 

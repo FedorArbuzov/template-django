@@ -1,12 +1,15 @@
+import threading
+
 import openai
 
 from bot.models import Settings, Proile, Dialogs, Messages
 from bot.send_message import send_gpt_response, send_pure_text_message, send_start_message, send_subscribe_check
+from bot.consts import GPT_API_KEY
 
-openai.api_key = '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'
+openai.api_key = GPT_API_KEY
 
 
-def chat_gpt_request(settings, profile, messages, text):
+def chat_gpt_request(settings, profile, messages, text, chat_id, dialog):
 
     messages_to_gpt = []
     messages_to_gpt.append({
@@ -20,13 +23,34 @@ def chat_gpt_request(settings, profile, messages, text):
     messages_to_gpt.append({
         "role": "user", "content": text
     })
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=messages_to_gpt
-    )
+    response = None
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=messages_to_gpt
+        )
+    except:
+        dialog.delete()
+        send_pure_text_message(chat_id, settings.max_gpt_context_limit)
+        return
 
     generated_text = response.choices[0].message.content
-    return generated_text
+    send_gpt_response(chat_id, generated_text)
+    profile.message_count += 1
+    profile.save()
+    user_message = Messages.objects.create(
+        dialog=dialog,
+        text =text,
+        is_send_by_user=True
+    )
+    user_message.save()
+    system_message = Messages.objects.create(
+        dialog=dialog,
+        text=generated_text,
+        is_send_by_user=False
+    )
+    system_message.save()
+    print('ответ сгенерирован')
 
 
 def make_chat_gpt_request(chat_id, text):
@@ -51,21 +75,8 @@ def make_chat_gpt_request(chat_id, text):
             dialog.save()
         messages = Messages.objects.filter(dialog=dialog).order_by('created_at')
         send_pure_text_message(chat_id, settings.gpt_process_started)
-        result = chat_gpt_request(settings, profile, messages, text)
-        send_gpt_response(chat_id, result)
-        profile.message_count += 1
-        profile.save()
-        user_message = Messages.objects.create(
-            dialog=dialog,
-            text =text,
-            is_send_by_user=True
-        )
-        user_message.save()
-        system_message = Messages.objects.create(
-            dialog=dialog,
-            text=result,
-            is_send_by_user=False
-        )
-        system_message.save()
+        t = threading.Thread(target=chat_gpt_request, args=(settings, profile, messages, text, chat_id, dialog))
+        t.start()
+        print('задача поставлена')
     else:
         send_pure_text_message(chat_id, settings.get_premium_message)
