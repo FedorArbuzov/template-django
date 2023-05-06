@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from bot.register_hook import register_webhook
 from bot.check_callbacks import check_callbacks
 from bot.send_message import (send_start_message, send_subscribe_link, send_subscribe_check,
-                              send_start_dialog, send_stop_dialog, set_premium, get_profile_info, set_preferences_mode)
+                              send_start_dialog, send_stop_dialog, set_premium, get_profile_info, set_preferences_mode, stop_preferences_mode)
 from bot.chat_gpt_api import make_chat_gpt_request
 
 register_webhook()
@@ -40,6 +40,8 @@ def webhook(request):
         get_profile_info(chat_id)
     elif text == '/set_preferences':
         set_preferences_mode(chat_id)
+    elif text == '/stop_preferences_mode':
+        stop_preferences_mode(chat_id)
     elif text == '/get_premium':
         set_premium(chat_id)
     else:

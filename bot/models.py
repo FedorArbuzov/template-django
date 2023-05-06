@@ -6,7 +6,9 @@ class Settings(models.Model):
     start_message = models.TextField(default='Стартовое сообщение')
     subscribe_link = models.CharField(default='Подписаться', max_length=100)
     subscribe_check = models.CharField(default='Проверить', max_length=100)
+    back_button = models.CharField(default='Назад', max_length=100)
 
+    channel_link = models.CharField(default='https://t.me/test_gpt', max_length=100)
     channel_id = models.CharField(default='@test_gpt', max_length=100)
     you_not_subscribed_message = models.TextField(default='Вы еще не подписаны, подпишитесь пожалуйста')
     you_subscribed_message = models.TextField(default='Вы подписаны, можете пользоваться')

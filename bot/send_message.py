@@ -23,7 +23,7 @@ def send_start_message(chat_id):
                 [
                     {
                         'text': settings.subscribe_link,
-                        'callback_data': '/subscribe_link'
+                        'url': settings.channel_link
                     },
                 ],
                 [
@@ -35,7 +35,8 @@ def send_start_message(chat_id):
             ]
         }
     }
-    requests.post(URL + '/sendMessage', json = req)
+    r = requests.post(URL + '/sendMessage', json = req)
+    print(r)
 
 
 def send_subscribe_link(chat_id):
@@ -175,7 +176,22 @@ def send_gpt_response(chat_id, text):
 
 def set_premium(chat_id):
     settings = Settings.objects.first()
-    send_pure_text_message(chat_id, settings.get_premium_message)
+    req = {
+        'chat_id': chat_id, 
+        'text': settings.get_premium_message,
+        'parse_mode': 'HTML',
+        'reply_markup': {
+            'inline_keyboard': [
+                [
+                    {
+                        'text': settings.back_button,
+                        'callback_data': '/subscribe_check'
+                    },
+                ],
+            ]
+        }
+    }
+    requests.post(URL + '/sendMessage', json = req)
 
 
 def get_profile_info(chat_id):
@@ -201,8 +217,8 @@ def get_profile_info(chat_id):
                 ],
                 [
                     {
-                        'text': settings.start_dialog,
-                        'callback_data': '/start_dialog'
+                        'text': settings.back_button,
+                        'callback_data': '/subscribe_check'
                     },
                 ],
             ]
@@ -218,7 +234,7 @@ def format_user_message(profile, settings):
 
 📊 Информация:
 Сделано запросов: {profile.message_count}
-Оставшиеся запросы: {settings.max_free_requests_count - profile.message_count}
+Оставшиеся запросы: {settings.max_free_requests_count - profile.message_count if settings.max_free_requests_count - profile.message_count > 0 else 0}
 Подписка: {'Активна' if profile.is_premium else 'Неактивна'}"""
 
 
@@ -227,4 +243,48 @@ def set_preferences_mode(chat_id):
     profile = Proile.objects.get(user_id=chat_id)
     profile.preferences_edit_mode = True
     profile.save()
-    send_pure_text_message(chat_id, 'Можете начать редактировать')
+    req = {
+        'chat_id': chat_id, 
+        'text': settings.preferences_start_edit_message,
+        'parse_mode': 'HTML',
+        'reply_markup': {
+            'inline_keyboard': [
+                [
+                    {
+                        'text': settings.back_button,
+                        'callback_data': '/stop_preferences_mode'
+                    },
+                ],
+            ]
+        }
+    }
+    requests.post(URL + '/sendMessage', json = req)
+
+
+def stop_preferences_mode(chat_id):
+    settings = Settings.objects.first()
+    profile = Proile.objects.get(user_id=chat_id)
+    profile.preferences_edit_mode = False
+    profile.save()
+    req = {
+        'chat_id': chat_id, 
+        'text': settings.you_subscribed_message,
+        'parse_mode': 'HTML',
+        'reply_markup': {
+            'inline_keyboard': [
+                [
+                    {
+                        'text': settings.start_dialog,
+                        'callback_data': '/start_dialog'
+                    },
+                ],
+                [
+                    {
+                        'text': settings.profile,
+                        'callback_data': '/profile'
+                    },
+                ],
+            ]
+        }
+    }
+    requests.post(URL + '/sendMessage', json = req)

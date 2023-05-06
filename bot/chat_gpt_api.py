@@ -1,7 +1,7 @@
 import openai
 
 from bot.models import Settings, Proile, Dialogs, Messages
-from bot.send_message import send_gpt_response, send_pure_text_message, send_start_message
+from bot.send_message import send_gpt_response, send_pure_text_message, send_start_message, send_subscribe_check
 
 openai.api_key = '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'
 
@@ -42,6 +42,7 @@ def make_chat_gpt_request(chat_id, text):
         profile.preferences_edit_mode = False
         profile.save()
         send_pure_text_message(chat_id, settings.preferences_success_edit_message)
+        send_subscribe_check(chat_id)
         return
     if profile.is_premium or profile.message_count < settings.max_free_requests_count:
         dialog = Dialogs.objects.filter(profile=profile).last()
