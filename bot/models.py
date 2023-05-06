@@ -26,6 +26,7 @@ class Settings(models.Model):
     dialog_started_message = models.TextField(default='Диалог начат')
     stop_dialog_button = models.CharField(default='Закончить диалог', max_length=100)
     dialog_stoped_message = models.TextField(default='Диалог закончен')
+    gpt_process_started = models.TextField(default='Сейчас ответим')
 
     you_got_premium = models.TextField(default='Вы получили премиум')
     set_preferences_button = models.CharField(default='Настройки', max_length=100)

@@ -50,6 +50,7 @@ def make_chat_gpt_request(chat_id, text):
             dialog = Dialogs.objects.create(profile=profile)
             dialog.save()
         messages = Messages.objects.filter(dialog=dialog).order_by('created_at')
+        send_pure_text_message(chat_id, settings.gpt_process_started)
         result = chat_gpt_request(settings, profile, messages, text)
         send_gpt_response(chat_id, result)
         profile.message_count += 1
