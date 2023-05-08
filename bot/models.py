@@ -16,6 +16,12 @@ class Settings(models.Model):
     subscribe_please_message = models.TextField(default='Подпишитесь пожалуйста на @test_gpt')
 
     max_gpt_context_limit = models.TextField(default='Достигнуто ограничение по числу сообщений в диалоге, попробуйте задать вопрос в новом диалоге')
+    generate_image_command = models.CharField(default='Сгенерировать изображение', max_length=100)
+    generate_image_prompt = models.TextField(default='Напишите описание для генерации изображения', max_length=100)
+    stop_generate_button = models.CharField(default='Отменить генерацию', max_length=100)
+    stop_generate_message = models.TextField(default='Вы отменили генерацию')
+    start_generate_message = models.TextField(default='Генрация началась')
+    
     start_dialog = models.CharField(default='Начать диалог', max_length=100)
     profile = models.CharField(default='Профиль', max_length=100)
 
@@ -47,6 +53,7 @@ class Proile(models.Model):
     is_premium = models.BooleanField(default=False)
     preferences = models.TextField(default='Общайся со мной как с другом')
     preferences_edit_mode = models.BooleanField(default=False)
+    generate_image_mode = models.BooleanField(default=False)
     premium_bought_to = models.DateField(blank=True, null=True)
 
 

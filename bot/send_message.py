@@ -7,6 +7,11 @@ from bot.check_user_subscribed_to_channel import check_user_suscription_to_chann
 
 
 
+def send_image(chat_id, image_url):
+    req = {'chat_id': chat_id, 'photo': image_url}
+    requests.post(URL + '/sendPhoto', json = req)
+
+
 def send_pure_text_message(chat_id, message):
     req = {'chat_id': chat_id, 'text': message}
     requests.post(URL + '/sendMessage', json = req)
@@ -76,6 +81,12 @@ def send_you_subscribed_message(chat_id):
                 ],
                 [
                     {
+                        'text': settings.generate_image_command,
+                        'callback_data': '/generate_image_start'
+                    },
+                ],
+                [
+                    {
                         'text': settings.profile,
                         'callback_data': '/profile'
                     },
@@ -84,6 +95,30 @@ def send_you_subscribed_message(chat_id):
         }
     }
     requests.post(URL + '/sendMessage', json = req)
+
+
+def generate_image_start(chat_id):
+    settings = Settings.objects.first()
+    profile, _ = Proile.objects.get_or_create(user_id=chat_id)
+    profile.generate_image_mode = True
+    profile.save()
+    req = {
+        'chat_id': chat_id, 
+        'text': settings.generate_image_prompt,
+        'parse_mode': 'HTML',
+        'reply_markup': {
+            'inline_keyboard': [
+                [
+                    {
+                        'text': settings.stop_generate_button,
+                        'callback_data': '/stop_generate_mode'
+                    },
+                ],
+            ]
+        }
+    }
+    requests.post(URL + '/sendMessage', json = req)
+
 
 
 def send_you_not_subscribed_message(chat_id):
@@ -138,6 +173,12 @@ def send_stop_dialog(chat_id):
                     {
                         'text': settings.start_dialog,
                         'callback_data': '/start_dialog'
+                    },
+                ],
+                [
+                    {
+                        'text': settings.generate_image_command,
+                        'callback_data': '/generate_image_start'
                     },
                 ],
                 [
@@ -280,6 +321,12 @@ def stop_preferences_mode(chat_id):
                 ],
                 [
                     {
+                        'text': settings.generate_image_command,
+                        'callback_data': '/generate_image_start'
+                    },
+                ],
+                [
+                    {
                         'text': settings.profile,
                         'callback_data': '/profile'
                     },
@@ -288,3 +335,39 @@ def stop_preferences_mode(chat_id):
         }
     }
     requests.post(URL + '/sendMessage', json = req)
+
+
+def stop_generate_mode(chat_id):
+    settings = Settings.objects.first()
+    profile = Proile.objects.get(user_id=chat_id)
+    profile.preferences_edit_mode = False
+    profile.save()
+    req = {
+        'chat_id': chat_id, 
+        'text': settings.stop_generate_message,
+        'parse_mode': 'HTML',
+        'reply_markup': {
+            'inline_keyboard': [
+                [
+                    {
+                        'text': settings.start_dialog,
+                        'callback_data': '/start_dialog'
+                    },
+                ],
+                [
+                    {
+                        'text': settings.generate_image_command,
+                        'callback_data': '/generate_image_start'
+                    },
+                ],
+                [
+                    {
+                        'text': settings.profile,
+                        'callback_data': '/profile'
+                    },
+                ],
+            ]
+        }
+    }
+    requests.post(URL + '/sendMessage', json = req)
+

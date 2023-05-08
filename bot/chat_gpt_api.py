@@ -3,7 +3,7 @@ import threading
 import openai
 
 from bot.models import Settings, Proile, Dialogs, Messages
-from bot.send_message import send_gpt_response, send_pure_text_message, send_start_message, send_subscribe_check
+from bot.send_message import send_gpt_response, send_pure_text_message, send_start_message, send_subscribe_check, send_image
 from bot.consts import GPT_API_KEY
 
 openai.api_key = GPT_API_KEY
@@ -53,6 +53,17 @@ def chat_gpt_request(settings, profile, messages, text, chat_id, dialog):
     print('ответ сгенерирован')
 
 
+def generate_image(chat_id, text):
+    response = openai.Image.create(
+        prompt=text,
+        n=2,
+        size="512x512"
+    )
+
+    send_image(chat_id, response['data'][0]['url'])
+    send_subscribe_check(chat_id)
+
+
 def make_chat_gpt_request(chat_id, text):
     # проверка что пользователь может делать запросы
     settings = Settings.objects.first()
@@ -61,14 +72,23 @@ def make_chat_gpt_request(chat_id, text):
         send_pure_text_message(chat_id, settings.you_need_to_register)
         send_start_message(chat_id)
         return
-    if profile.preferences_edit_mode:
+    elif profile.preferences_edit_mode:
         profile.preferences = text
         profile.preferences_edit_mode = False
         profile.save()
         send_pure_text_message(chat_id, settings.preferences_success_edit_message)
         send_subscribe_check(chat_id)
         return
-    if profile.is_premium or profile.message_count < settings.max_free_requests_count:
+    elif profile.generate_image_mode and (profile.is_premium or profile.message_count < settings.max_free_requests_count):
+        print('сгенерировано изображение')
+        profile.generate_image_mode = False
+        profile.message_count += 1
+        profile.save()
+        send_pure_text_message(chat_id, settings.start_generate_message)
+        t = threading.Thread(target=generate_image, args=(chat_id, text))
+        t.start()
+        return
+    elif profile.is_premium or profile.message_count < settings.max_free_requests_count:
         dialog = Dialogs.objects.filter(profile=profile).last()
         if not dialog:
             dialog = Dialogs.objects.create(profile=profile)
