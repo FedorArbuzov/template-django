@@ -59,8 +59,12 @@ def generate_image(chat_id, text):
         n=2,
         size="512x512"
     )
+    caption = f'''Ваш запрос: {text} 
+Нейросеть: DALL-E 2
 
-    send_image(chat_id, response['data'][0]['url'])
+❗️Внимание, бот не несёт ответственности за сгенерированный вами материал.
+    '''
+    send_image(chat_id, response['data'][0]['url'], caption)
     send_subscribe_check(chat_id)
 
 

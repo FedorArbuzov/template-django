@@ -7,8 +7,8 @@ from bot.check_user_subscribed_to_channel import check_user_suscription_to_chann
 
 
 
-def send_image(chat_id, image_url):
-    req = {'chat_id': chat_id, 'photo': image_url}
+def send_image(chat_id, image_url, caption):
+    req = {'chat_id': chat_id, 'photo': image_url, 'caption': caption}
     requests.post(URL + '/sendPhoto', json = req)
 
 
