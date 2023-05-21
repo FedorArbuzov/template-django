@@ -26,10 +26,10 @@ def chat_gpt_request(settings, profile, messages, text, chat_id, dialog):
     response = None
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-4" if profile.is_premium else "gpt-3.5-turbo",
+            model="gpt-3.5-turbo",
             messages=messages_to_gpt
         )
-    except:
+    except Exception as e:
         dialog.delete()
         send_pure_text_message(chat_id, settings.max_gpt_context_limit)
         return

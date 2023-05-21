@@ -1,10 +1,21 @@
+import copy
 import requests
+from multiprocessing.dummy import Pool as ThreadPool
 
 from bot.models import Proile
 
 from bot.consts import TOKEN
 
 URL = f'https://api.telegram.org/bot'
+
+
+def make_request(data):
+    url = data['url']
+    data.pop('url', None)
+    print(data['chat_id'])
+    r = requests.post(url, json = data)
+    print(r.status_code)
+
 
 def format_complex_message(req, url, message):
     if 'document:' in message:
@@ -34,16 +45,21 @@ def send_message_to_group(content, group):
     elif group == 'ADMINS':
         profiles = Proile.objects.filter(is_admin=True)
     results = ''
-    for profile in profiles:
-        print(profile)
-        url = URL + TOKEN
-        req = {
-            'chat_id': 123, 
-            'parse_mode': 'HTML',
-        }
-        req, url = format_complex_message(req, url, content)
-        req['chat_id'] = profile.user_id
-        results += profile.user_id + '\n'
-        r = requests.post(url, json = req)
-        print(r.status_code)
+    url = URL + TOKEN
+    req = {
+        'chat_id': 123, 
+        'parse_mode': 'HTML',
+    }
+    req, url = format_complex_message(req, url, content)
+    for chunk in [profiles[i:i+10] for i in range(0,len(profiles),10)]:
+        reqs = []
+        for i in chunk:
+            data = copy.deepcopy(req)
+            data['chat_id'] = i.user_id
+            data['url'] = url
+            reqs.append(data)
+        pool = ThreadPool(len(chunk))
+        pool.map(make_request, reqs)
+        pool.close()
+        pool.join()
     return results
