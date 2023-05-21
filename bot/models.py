@@ -1,5 +1,8 @@
 from django.db import models
 
+from django.utils.translation import gettext_lazy as _
+
+
 
 class Settings(models.Model):
 
@@ -51,6 +54,7 @@ class Proile(models.Model):
     user_id = models.CharField(default='', max_length=100)
     message_count = models.IntegerField(default=0)
     is_premium = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=False)
     preferences = models.TextField(default='Общайся со мной как с другом')
     preferences_edit_mode = models.BooleanField(default=False)
     generate_image_mode = models.BooleanField(default=False)
@@ -67,3 +71,24 @@ class Messages(models.Model):
     text = models.TextField(default='')
     is_send_by_user = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+
+class Posts(models.Model):
+    content = models.TextField(verbose_name='Содержимое сообщения')
+    
+    class GroupOfUsers(models.TextChoices):
+        ALL = 'ALL', _('всем')
+        ADMINS = 'ADMINS', _('администратор')
+        
+
+    group = models.CharField(
+        max_length=100,
+        choices=GroupOfUsers.choices,
+        default=GroupOfUsers.ADMINS,
+    )
+
+    is_send = models.BooleanField(default=False, verbose_name='Сообщение отправлено')
+
+    target_users = models.TextField(default="", null=True, blank=True)
+    

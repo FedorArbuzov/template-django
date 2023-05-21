@@ -26,7 +26,7 @@ def chat_gpt_request(settings, profile, messages, text, chat_id, dialog):
     response = None
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4" if profile.is_premium else "gpt-3.5-turbo",
             messages=messages_to_gpt
         )
     except:
