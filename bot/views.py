@@ -51,7 +51,7 @@ def prodamus_webhook(request):
         print(invite_link)
         send_invite_link_message(settings.invite_message_channel, order.profile.user_id, invite_link)
         
-        profile.premium_bought_to += timedelta(days=1*30)
+        profile.premium_bought_to = datetime.now() + timedelta(days=1*30)
 
     elif order.subscribe_type == 1:
         invite_link = invite_link_user(CHANNEL_ID)['result']['invite_link']
@@ -62,7 +62,7 @@ def prodamus_webhook(request):
         print(invite_link)
         send_invite_link_message(settings.invite_message_group, order.profile.user_id, invite_link)
 
-        profile.premium_bought_to += timedelta(days=1*30)
+        profile.premium_bought_to = datetime.now() + timedelta(days=1*30)
 
     # if profile.premium_bought_to:
     #     profile.premium_bought_to += timedelta(days=1*30)
