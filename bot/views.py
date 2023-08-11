@@ -7,7 +7,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 from bot.register_hook import register_webhook
 from bot.check_callbacks import check_callbacks
-from bot.send_message import (send_start_message, send_pure_text_message, send_subscribe_link, send_invite_link_message, send_doc)
+from bot.send_message import (send_start_message, send_pure_text_message, send_subscribe_link, send_invite_link_message, send_doc, send_about_message,
+                                send_channel_info, send_buy_channel, send_channel_msg, send_about_group_message)
 
 from bot.models import Order, Settings
 
@@ -107,9 +108,25 @@ def webhook(request):
         return JsonResponse({'status': 'ok'})
     
     # Обработка стартовой команды
-    if text == '/start':
+    if text == '/start' or text == '/menu':
         print('start!')
         send_start_message(chat_id) 
+    elif text == '/about':
+        print('about')
+        send_about_message(chat_id)
+    elif text == '/channel':
+        print('channel')
+        send_channel_info(chat_id)
+    elif text == '/buy_channel':
+        print('buy_channel')
+        send_channel_msg(chat_id)
+    elif text == '/buy_channel_link':
+        print('buy_channel_link')
+    elif text == '/about_group':
+        print('about_group')
+        send_about_group_message(chat_id)
+    elif text == '/group_buy':
+        print('group_buy')
     elif '/subscribe_' in text: 
         send_subscribe_link(chat_id, text)
     else:

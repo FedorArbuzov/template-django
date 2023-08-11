@@ -45,8 +45,6 @@ def send_pure_text_message(chat_id, message):
 
 def send_start_message(chat_id):
     settings = Settings.objects.first()
-    profile, _ = Profile.objects.get_or_create(user_id=chat_id)
-    tariffs = Tariff.objects.all()
     req = {
         'chat_id': chat_id, 
         'text': settings.start_message,
@@ -55,9 +53,144 @@ def send_start_message(chat_id):
             'inline_keyboard': 
             [
                 [{
-                    'text': tariff.name,
-                    'callback_data': f'/subscribe_{tariff.number}'
-                }] for tariff in tariffs
+                    'text': settings.about_btn_text,
+                    'callback_data': f'/about'
+                }],
+                [{
+                    'text': settings.channel_btn_text,
+                    'callback_data': f'/channel'
+                }],
+            ]
+        }
+    }
+    r = requests.post(URL + '/sendMessage', json = req)
+    print(r)
+
+def send_about_message(chat_id):
+    settings = Settings.objects.first()
+    req = {
+        'chat_id': chat_id, 
+        'text': settings.about,
+        'parse_mode': 'HTML',
+        'reply_markup': {
+            'inline_keyboard': 
+            [
+                [{
+                    'text': 'Назад',
+                    'callback_data': f'/start'
+                }],
+            ]
+        }
+    }
+    r = requests.post(URL + '/sendMessage', json = req)
+    print(r)
+
+
+def send_channel_info(chat_id):
+    settings = Settings.objects.first()
+    req = {
+        'chat_id': chat_id, 
+        'text': settings.close_channel,
+        'parse_mode': 'HTML',
+        'reply_markup': {
+            'inline_keyboard': 
+            [
+                [{
+                    'text': settings.close_channel_btn_text,
+                    'callback_data': f'/buy_channel'
+                }],
+            ]
+        }
+    }
+    r = requests.post(URL + '/sendMessage', json = req)
+    print(r)
+
+
+def send_buy_channel(chat_id):
+    settings = Settings.objects.first()
+    req = {
+        'chat_id': chat_id, 
+        'text': "Дает доступ к закрытому каналу на 1 месяц (я напомню вам обновить подписку, не переживайте). ",
+        'parse_mode': 'HTML',
+        'reply_markup': {
+            'inline_keyboard': 
+            [
+                [{
+                    'text': settings.close_channel_btn_text,
+                    'callback_data': f'/buy_channel'
+                }],
+                [{
+                    'text': settings.buy_channel_btn,
+                    'callback_data': f'/subscribe_1'
+                }]
+            ]
+        }
+    }
+    r = requests.post(URL + '/sendMessage', json = req)
+    print(r)
+
+
+def send_about_group_message(chat_id):
+    settings = Settings.objects.first()
+    req = {
+        'chat_id': chat_id, 
+        'text': settings.about_group,
+        'parse_mode': 'HTML',
+        'reply_markup': {
+            'inline_keyboard': 
+            [
+                [{
+                    'text': settings.close_channel_btn_text,
+                    'callback_data': f'/buy_channel'
+                }],
+                [{
+                    'text': settings.buy_channel_btn,
+                    'callback_data': f'/subscribe_1'
+                }]
+            ]
+        }
+    }
+    r = requests.post(URL + '/sendMessage', json = req)
+    print(r)
+
+
+def send_channel_msg(chat_id):
+    settings = Settings.objects.first()
+    req = {
+        'chat_id': chat_id, 
+        'text': "Дает доступ к закрытому каналу на 1 месяц (я напомню вам обновить подписку, не переживайте). ",
+        'parse_mode': 'HTML',
+        'reply_markup': {
+            'inline_keyboard': 
+            [
+                [{
+                    'text': settings.buy_channel_btn,
+                    'callback_data': f'/subscribe_1'
+                }],
+                [{
+                    'text': 'Мне мало',
+                    'callback_data': f'/about_group'
+                }],
+            ]
+        }
+    }
+    r = requests.post(URL + '/sendMessage', json = req)
+    print(r)
+
+
+def send_about_group_message(chat_id):
+    settings = Settings.objects.first()
+    req = {
+        'chat_id': chat_id, 
+        'text': settings.about_group,
+        'parse_mode': 'HTML',
+        'reply_markup': {
+            'inline_keyboard': 
+            [
+                [{
+                    'text': "Тариф «База + чат инсайтов» 2 490 Р",
+                    'callback_data': f'/subscribe_2'
+                }],
             ]
         }
     }
@@ -76,9 +209,14 @@ def send_subscribe_link(chat_id, text):
     product_info = f"products[0][quantity]=1&products[0][name]={tariff.name}&customer_extra={tariff.name}&do=pay"
     payment_link = f"""https://mileryus.payform.ru/?order_id=order-{order.id}&customer_phone=79998887755&products[0][price]={tariff.price}&{product_info}"""
     print(payment_link)
+    msg = ''
+    if subscribe_type == 1:
+        msg = settings.channel_msg
+    elif subscribe_type == 2:
+        msg = settings.group_msg
     r = requests.post(URL + '/sendMessage', json = {
         'chat_id': chat_id, 
-        'text': settings.payment_link_message,
+        'text': msg,
         'parse_mode': 'HTML',
         'reply_markup': {
             'inline_keyboard': [
