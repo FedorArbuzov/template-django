@@ -46,14 +46,14 @@ def prodamus_webhook(request):
     if order.subscribe_type == 3:
         # отправка чек-листа
         send_doc(profile.user_id)
-    elif order.subscribe_type == 2:
+    elif order.subscribe_type == 1:
         invite_link = invite_link_user(CHANNEL_ID)['result']['invite_link']
         print(invite_link)
         send_invite_link_message(settings.invite_message_channel, order.profile.user_id, invite_link)
         
         profile.premium_bought_to = datetime.now() + timedelta(days=1*30)
 
-    elif order.subscribe_type == 1:
+    elif order.subscribe_type == 2:
         invite_link = invite_link_user(CHANNEL_ID)['result']['invite_link']
         print(invite_link)
         send_invite_link_message(settings.invite_message_channel, order.profile.user_id, invite_link)
