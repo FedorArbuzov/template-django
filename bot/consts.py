@@ -1,3 +1,5 @@
-TOKEN = '6273372078:AAF8dC4SEhmaK1sJpQiSFEkNd00mGt-L_ew'
-HOST = 'nabot.ru'
+TOKEN = '5543379327:AAGEVtTh-buSk6qPvCMWXIJBk2kqOZaAguQ'
+HOST = 'https://2767-185-172-136-20.ngrok-free.app'
 URL = f'https://api.telegram.org/bot{TOKEN}'
+GROUP_ID = -1001812006708
+CHANNEL_ID = -1001958898793

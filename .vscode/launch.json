@@ -8,7 +8,7 @@
             "name": "Python: Django",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/django/manage.py",
+            "program": "${workspaceFolder}/manage.py",
             "python": "${workspaceFolder}/env/bin/python",
             "args": [
                 "runserver"
@@ -17,12 +17,14 @@
             "justMyCode": true
         },
         {
-            "name": "Python: File",
+            "name": "Python: revoke access",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/django/users/utils/send_order_in_amocrm.py",
+            "program": "${workspaceFolder}/manage.py",
             "python": "${workspaceFolder}/env/bin/python",
-            "args": [],
+            "args": [
+                "revoke_access_from_users"
+            ],
             "django": true,
             "justMyCode": true
         },

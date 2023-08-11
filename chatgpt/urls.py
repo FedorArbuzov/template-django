@@ -22,5 +22,5 @@ from bot import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('webhook/', views.webhook, name='webhook'),
-
+    path('prodamus_webhook/', views.prodamus_webhook, name='prodamus_webhook'),
 ]
