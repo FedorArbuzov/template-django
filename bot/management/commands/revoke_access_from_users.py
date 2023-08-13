@@ -5,7 +5,7 @@ from django.core.management import BaseCommand
 
 from bot.models import Profile
 from bot.consts import URL, GROUP_ID, CHANNEL_ID
-from bot.send_message import send_pure_text_message
+from bot.send_message import send_pure_text_message, send_channel_info
 
 
 user_id = 340473490
@@ -34,7 +34,8 @@ class Command(BaseCommand):
             user.premium_ending_alerted = True
             user.save()
             send_pure_text_message(user.user_id, 'Через 3 дня у вас закончится подписка, пожалуйста продлите')
-            self.stdout.write(self.style.SUCCESS(f'Notification sent to user: {user.username}'))
+            send_channel_info(user.user_id)
+            self.stdout.write(self.style.SUCCESS(f'Notification sent to user: {user}'))
 
         # Найти пользователей, у которых закончилась подписка
         users = Profile.objects.filter(premium_bought_to__lt=current_date)
@@ -43,7 +44,8 @@ class Command(BaseCommand):
             # Удалить пользователя из группы
 
             send_pure_text_message(user.user_id, 'У вас закончилась подписка, пожалуйста продлите')
+            send_channel_info(user.user_id)
             ban_user(user.user_id, GROUP_ID)
             ban_user(user.user_id, CHANNEL_ID)
-            self.stdout.write(self.style.SUCCESS(f'User removed from group: {user.username}'))
+            self.stdout.write(self.style.SUCCESS(f'User removed from group: {user}'))
 
