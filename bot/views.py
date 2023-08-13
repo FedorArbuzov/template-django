@@ -47,6 +47,7 @@ def prodamus_webhook(request):
         # отправка чек-листа
         send_doc(profile.user_id)
     elif order.subscribe_type == 1:
+        unban_user(order.profile.user_id, CHANNEL_ID)
         invite_link = invite_link_user(CHANNEL_ID)['result']['invite_link']
         print(invite_link)
         send_invite_link_message(settings.invite_message_channel, order.profile.user_id, invite_link)
@@ -54,10 +55,12 @@ def prodamus_webhook(request):
         profile.premium_bought_to = datetime.now() + timedelta(days=1*30)
 
     elif order.subscribe_type == 2:
+        unban_user(order.profile.user_id, CHANNEL_ID)
         invite_link = invite_link_user(CHANNEL_ID)['result']['invite_link']
         print(invite_link)
         send_invite_link_message(settings.invite_message_channel, order.profile.user_id, invite_link)
 
+        unban_user(order.profile.user_id, GROUP_ID)
         invite_link = invite_link_user(GROUP_ID)['result']['invite_link']
         print(invite_link)
         send_invite_link_message(settings.invite_message_group, order.profile.user_id, invite_link)
