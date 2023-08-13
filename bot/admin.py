@@ -5,11 +5,13 @@ from bot.models import Settings, Profile, Order, Tariff
 
 admin.site.register(Settings)
 
-admin.site.register(Profile)
+admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ('user_id', 'is_premium', 'premium_bought_to')
 
 
 @admin.register(Tariff)
-class OrderAdmin(admin.ModelAdmin):
+class TariffAdmin(admin.ModelAdmin):
     list_display = ('name', 'price', 'number')
 
 
