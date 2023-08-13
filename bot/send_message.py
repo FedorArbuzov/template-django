@@ -96,8 +96,16 @@ def send_channel_info(chat_id):
             'inline_keyboard': 
             [
                 [{
-                    'text': settings.close_channel_btn_text,
-                    'callback_data': f'/buy_channel'
+                    'text': settings.buy_channel_btn,
+                    'callback_data': f'/subscribe_1'
+                }],
+                [{
+                    'text': settings.buy_group_btn,
+                    'callback_data': f'/subscribe_2'
+                }],
+                [{
+                    'text': 'Назад',
+                    'callback_data': f'/start'
                 }],
             ]
         }

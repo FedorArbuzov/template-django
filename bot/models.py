@@ -48,7 +48,7 @@ class Settings(models.Model):
     close_channel_btn_text = models.TextField(default='С меня достаточно')
 
     buy_channel_btn = models.TextField(default='Тариф «Святая база» 1 490 Р')
-
+    buy_group_btn = models.TextField(default="Тариф «База + чат инсайтов» 2 490 Р")
 
     about_group = models.TextField(default="""Мы любим людей, которым вечно всего мало. Значит, вы всегда хотите большего. 
 
@@ -68,6 +68,7 @@ class Profile(models.Model):
     user_id = models.CharField(default='', max_length=100)
     is_premium = models.BooleanField(default=False)
     premium_bought_to = models.DateField(blank=True, null=True)
+    premium_ending_alerted = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.user_id
