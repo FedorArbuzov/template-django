@@ -31,10 +31,9 @@ class Command(BaseCommand):
             # Например, отправка электронной почты или уведомление через внешний сервис
 
             # Обновите флаг уведомления в профиле пользователя
-            profile = user.profile
-            profile.premium_ending_alerted = True
-            profile.save()
-            send_pure_text_message(profile.user_id, 'Через 3 дня у вас закончится подписка, пожалуйста продлите')
+            user.premium_ending_alerted = True
+            user.save()
+            send_pure_text_message(user.user_id, 'Через 3 дня у вас закончится подписка, пожалуйста продлите')
             self.stdout.write(self.style.SUCCESS(f'Notification sent to user: {user.username}'))
 
         # Найти пользователей, у которых закончилась подписка
@@ -43,8 +42,8 @@ class Command(BaseCommand):
         for user in users:
             # Удалить пользователя из группы
 
-            send_pure_text_message(profile.user_id, 'У вас закончилась подписка, пожалуйста продлите')
-            ban_user(profile.user_id, GROUP_ID)
-            ban_user(profile.user_id, CHANNEL_ID)
+            send_pure_text_message(user.user_id, 'У вас закончилась подписка, пожалуйста продлите')
+            ban_user(user.user_id, GROUP_ID)
+            ban_user(user.user_id, CHANNEL_ID)
             self.stdout.write(self.style.SUCCESS(f'User removed from group: {user.username}'))
 
