@@ -5,7 +5,7 @@ from bot.models import Settings, Profile, Order, Tariff
 
 admin.site.register(Settings)
 
-admin.register(Profile)
+@admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('user_id', 'is_premium', 'premium_bought_to')
 
