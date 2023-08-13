@@ -19,9 +19,6 @@ def ban_user(user_id, chat_id):
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        print(123)
-        ban_user(user_id)
-        print(f'User {user_id} has been blocked in the group.')
 
         # Получите текущую дату и время
         current_date = timezone.now().date()
