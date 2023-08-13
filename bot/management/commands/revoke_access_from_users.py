@@ -24,7 +24,7 @@ class Command(BaseCommand):
         current_date = timezone.now().date()
 
         # Найдите пользователей, чья подписка заканчивается через три дня
-        users = Profile.objects.filter(profile__premium_bought_to=current_date + timezone.timedelta(days=3))
+        users = Profile.objects.filter(premium_bought_to=current_date + timezone.timedelta(days=3))
 
         for user in users:
             # Отправьте уведомление пользователю
@@ -38,7 +38,7 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS(f'Notification sent to user: {user.username}'))
 
         # Найти пользователей, у которых закончилась подписка
-        users = Profile.objects.filter(profile__premium_bought_to__lt=current_date)
+        users = Profile.objects.filter(premium_bought_to__lt=current_date)
 
         for user in users:
             # Удалить пользователя из группы
