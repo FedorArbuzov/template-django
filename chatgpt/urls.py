@@ -18,9 +18,12 @@ from django.urls import path
 
 from bot import views
 
+from statsbot import views as statsbot_views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('webhook/', views.webhook, name='webhook'),
+    path('statsbot-webhook/', statsbot_views.webhook, name='statsbot_webhook'),
     path('prodamus_webhook/', views.prodamus_webhook, name='prodamus_webhook'),
 ]
