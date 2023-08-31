@@ -35,7 +35,8 @@ def send_photo_message(chat_id):
     settings = Settings.objects.first()
     url = URL
     req = {
-        'chat_id': chat_id
+        'chat_id': chat_id,
+        'protect_content': True
     }
 
     req, url =  format_complex_message(req, url, settings.image)
@@ -49,6 +50,7 @@ def send_start_message(chat_id):
         'chat_id': chat_id, 
         'text': settings.start_message,
         'parse_mode': 'HTML',
+        'protect_content': True,
         'reply_markup': {
             'inline_keyboard': 
             [
