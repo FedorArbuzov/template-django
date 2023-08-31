@@ -43,8 +43,8 @@ def send_photo_message(chat_id):
     requests.post(url, json = req)
 
 
-def send_start_message(chat_id):
-    Profile.objects.get_or_create(user_id=chat_id)
+def send_start_message(chat_id, user_telegram_username):
+    Profile.objects.get_or_create(user_id=chat_id, username=user_telegram_username)
     settings = Settings.objects.first()
     req = {
         'chat_id': chat_id, 

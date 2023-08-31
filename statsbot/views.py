@@ -25,6 +25,12 @@ def webhook(request):
     print(chat_id)
     if chat_id < 0:
         return JsonResponse({'status': 'ok'})
+
+    
+    try:
+        user_telegram_username = json_data['message']['chat']['username']
+    except KeyError:
+        user_telegram_username = None
     
     text = json_data['message'].get('text', '')
     if 'document' in json_data['message']:
@@ -40,7 +46,7 @@ def webhook(request):
     # Обработка стартовой команды
     if text == '/start' or text == '/menu':
         print('start!')
-        send_start_message(chat_id) 
+        send_start_message(chat_id, user_telegram_username) 
     elif text == '/get_photo':
         print('get_photo')
         send_photo_message(chat_id)

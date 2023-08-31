@@ -15,6 +15,7 @@ class Settings(models.Model):
 
 class Profile(models.Model):
     user_id = models.CharField(default='', max_length=100)
+    username = models.CharField(default='', max_length=100, null=True, blank=True)
 
     def __str__(self) -> str:
         return self.user_id
