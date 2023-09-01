@@ -9,4 +9,3 @@ class ProfileAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Settings)
-admin.site.register(Profile)
