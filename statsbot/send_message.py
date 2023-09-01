@@ -36,7 +36,8 @@ def send_photo_message(chat_id):
     url = URL
     req = {
         'chat_id': chat_id,
-        'protect_content': True
+        'protect_content': True,
+        'has_spoiler': True
     }
 
     req, url =  format_complex_message(req, url, settings.image)
