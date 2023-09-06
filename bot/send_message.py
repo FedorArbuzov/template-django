@@ -295,5 +295,5 @@ def send_doc(chat_id):
         }
     }
 
-    req, url =  format_complex_message(req, url, settings.file_link)
+    req, url =  format_complex_message(req, url, settings.buy_check_list_text)
     requests.post(url, json = req)
