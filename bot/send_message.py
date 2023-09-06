@@ -60,11 +60,16 @@ def send_start_message(chat_id):
                     'text': settings.channel_btn_text,
                     'callback_data': f'/channel'
                 }],
+                [{
+                    'text': settings.check_list_btn_text,
+                    'callback_data': f'/subscribe_3'
+                }],
             ]
         }
     }
     r = requests.post(URL + '/sendMessage', json = req)
     print(r)
+
 
 def send_about_message(chat_id):
     settings = Settings.objects.first()
@@ -212,16 +217,19 @@ def send_subscribe_link(chat_id, text):
     profile, _ = Profile.objects.get_or_create(user_id=chat_id)
     subscribe_type = int(text.split('_')[1])
     order = Order.objects.create(profile=profile, subscribe_type=subscribe_type)
-    price = 2000
     tariff = Tariff.objects.get(number=subscribe_type)
     product_info = f"products[0][quantity]=1&products[0][name]={tariff.name}&customer_extra={tariff.name}&do=pay"
     payment_link = f"""https://mileryus.payform.ru/?order_id=order-{order.id}&customer_phone=79998887755&products[0][price]={tariff.price}&{product_info}"""
     print(payment_link)
     msg = ''
+    btn_text = 'оплатить'
     if subscribe_type == 1:
         msg = settings.channel_msg
     elif subscribe_type == 2:
         msg = settings.group_msg
+    elif subscribe_type == 3:
+        msg = settings.check_list_text
+        btn_text = settings.buy_check_list_btn_text
     r = requests.post(URL + '/sendMessage', json = {
         'chat_id': chat_id, 
         'text': msg,
@@ -230,7 +238,7 @@ def send_subscribe_link(chat_id, text):
             'inline_keyboard': [
                 [
                     {
-                        'text': 'оплатить',
+                        'text': btn_text,
                         'url': payment_link
                     },
                 ],
