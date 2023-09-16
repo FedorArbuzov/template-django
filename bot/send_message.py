@@ -60,10 +60,11 @@ def send_start_message(chat_id):
                     'text': settings.channel_btn_text,
                     'callback_data': f'/channel'
                 }],
-                [{
-                    'text': settings.check_list_btn_text,
-                    'callback_data': f'/subscribe_3'
-                }],
+                # заказчик попросил скрыть
+                # [{
+                #     'text': settings.check_list_btn_text,
+                #     'callback_data': f'/subscribe_3'
+                # }],
             ]
         }
     }
