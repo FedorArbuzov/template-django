@@ -17,4 +17,7 @@ class TariffAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'profile', 'profile__username', 'subscribe_type', 'paid')
+    list_display = ('id', 'profile', 'profile_username', 'subscribe_type', 'paid')
+
+    def profile_username(self, obj):
+        return obj.profile.username
