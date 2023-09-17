@@ -92,6 +92,7 @@ document:BQACAgIAAxkBAAIZVWT4Dy2IK2SpD8lXkJgYZEYclYu1AAKSMAAC14nBS8qzs1edYdhBMAQ
 
 class Profile(models.Model):
     user_id = models.CharField(default='', max_length=100)
+    username = models.CharField(default='', max_length=100, null=True, blank=True)
     is_premium = models.BooleanField(default=False)
     premium_bought_to = models.DateField(blank=True, null=True)
     premium_ending_alerted = models.BooleanField(default=False)

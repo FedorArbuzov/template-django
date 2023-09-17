@@ -7,7 +7,7 @@ admin.site.register(Settings)
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('user_id', 'is_premium', 'premium_bought_to')
+    list_display = ('user_id', 'username', 'is_premium', 'premium_bought_to')
 
 
 @admin.register(Tariff)
@@ -17,4 +17,4 @@ class TariffAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'profile', 'subscribe_type', 'paid')
+    list_display = ('id', 'profile', 'profile__username', 'subscribe_type', 'paid')

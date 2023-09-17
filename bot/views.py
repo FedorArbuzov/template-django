@@ -98,6 +98,13 @@ def webhook(request):
     print(chat_id)
     if chat_id < 0:
         return JsonResponse({'status': 'ok'})
+
+    
+    try:
+        user_telegram_username = json_data['message']['chat']['username']
+    except KeyError:
+        user_telegram_username = None
+    
     
     text = json_data['message'].get('text', '')
     if 'document' in json_data['message']:
@@ -131,7 +138,7 @@ def webhook(request):
     elif text == '/group_buy':
         print('group_buy')
     elif '/subscribe_' in text: 
-        send_subscribe_link(chat_id, text)
+        send_subscribe_link(chat_id, user_telegram_username, text)
     else:
         pass
     return JsonResponse({'status': 'ok'})

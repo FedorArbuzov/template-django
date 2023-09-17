@@ -212,10 +212,12 @@ def send_about_group_message(chat_id):
     print(r)
 
 
-def send_subscribe_link(chat_id, text):
+def send_subscribe_link(chat_id, user_telegram_username, text):
 
     settings = Settings.objects.first()
     profile, _ = Profile.objects.get_or_create(user_id=chat_id)
+    profile.username = user_telegram_username
+    profile.save()
     subscribe_type = int(text.split('_')[1])
     order = Order.objects.create(profile=profile, subscribe_type=subscribe_type)
     tariff = Tariff.objects.get(number=subscribe_type)
