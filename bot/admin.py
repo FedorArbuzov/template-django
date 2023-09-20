@@ -1,9 +1,11 @@
 from django.contrib import admin
 
-from bot.models import Settings, Profile, Order, Tariff
+from bot.models import Settings, Profile, Order, Tariff, Posts
 
 
 admin.site.register(Settings)
+
+admin.site.register(Posts)
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
