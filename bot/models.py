@@ -115,3 +115,7 @@ class Tariff(models.Model):
     def __str__(self) -> str:
         return self.name
 
+
+class Posts(models.Model):
+    message = models.TextField(default='У вас новый материал')
+    sent = models.BooleanField(default=False)
