@@ -38,11 +38,12 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS(f'Notification sent to user: {user}'))
 
         # Найти пользователей, у которых закончилась подписка
-        users = Profile.objects.filter(premium_bought_to__lt=current_date)
+        users = Profile.objects.filter(premium_bought_to__lt=current_date, premium_end_alerted=False)
 
         for user in users:
             # Удалить пользователя из группы
-
+            user.premium_end_alerted = True
+            user.save()
             send_pure_text_message(user.user_id, 'У вас закончилась подписка, пожалуйста продлите')
             send_channel_info(user.user_id)
             ban_user(user.user_id, GROUP_ID)

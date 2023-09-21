@@ -96,6 +96,8 @@ class Profile(models.Model):
     is_premium = models.BooleanField(default=False)
     premium_bought_to = models.DateField(blank=True, null=True)
     premium_ending_alerted = models.BooleanField(default=False)
+    premium_end_alerted = models.BooleanField(default=False)
+    
 
     def __str__(self) -> str:
         return self.user_id
