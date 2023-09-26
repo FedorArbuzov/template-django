@@ -95,15 +95,11 @@ def webhook(request):
     if 'message' not in json_data:
         return JsonResponse({'status': 'ok'})
     chat_id = json_data['message']['chat']['id']
+    user_telegram_username = json_data['message']['chat']['username']
     print(chat_id)
     if chat_id < 0:
         return JsonResponse({'status': 'ok'})
 
-    
-    try:
-        user_telegram_username = json_data['message']['chat']['username']
-    except KeyError:
-        user_telegram_username = None
     
     
     text = json_data['message'].get('text', '')
