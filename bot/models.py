@@ -75,6 +75,7 @@ document:BQACAgIAAxkBAAIZVWT4Dy2IK2SpD8lXkJgYZEYclYu1AAKSMAAC14nBS8qzs1edYdhBMAQ
 
     buy_channel_btn = models.TextField(default='Тариф «Святая база» 1 490 Р')
     buy_group_btn = models.TextField(default="Тариф «База + чат инсайтов» 2 490 Р")
+    buy_group_year_btn = models.TextField(default="Доступ на год со скидкой 20% 14 290Р")
 
     about_group = models.TextField(default="""Мы любим людей, которым вечно всего мало. Значит, вы всегда хотите большего. 
 
@@ -84,19 +85,38 @@ document:BQACAgIAAxkBAAIZVWT4Dy2IK2SpD8lXkJgYZEYclYu1AAKSMAAC14nBS8qzs1edYdhBMAQ
 
     group_msg = models.TextField(default="""Дает доступ к закрытому каналу на 1 месяц (я напомню вам обновить подписку, не переживайте) + доступ к закрытому чату с другими участниками, куда вы можете писать свои инсайты и читать чужие, перечитывать и держать перед глазами, чтобы не упускать философию #нахуйлогии из своей жизни. И делать запросы на интересующие вас темы. """)
 
+    group_year_msg = models.TextField(default="""Для истинных адептов #нахуйлогии – доступ к закрытому каналу на 1 год по супервыгодной цене. 
 
+Нажимая на кнопку "Оплатить" и отправляя данные формы, Вы принимаете условия публичной оферты (https://disk.yandex.ru/i/8BR_7WMy2CJZSw) и соглашаетесь с политикой конфиденциальности. (https://disk.yandex.ru/i/Yiafa2cOOqJUCg)""")
+
+    enter_your_phone = models.TextField(default="Пожалуйста введите ваш номер")
 
     def __str__(self) -> str:
         return 'Настройки'
 
 
+class QuestionState(models.TextChoices):
+    PHONE_INPUT = 'PI', _('ввод номера')
+
+
 class Profile(models.Model):
     user_id = models.CharField(default='', max_length=100)
     username = models.CharField(default='', max_length=100, null=True, blank=True)
+    phone = models.CharField(max_length=100, null=True, blank=True)
     is_premium = models.BooleanField(default=False)
     premium_bought_to = models.DateField(blank=True, null=True)
     premium_ending_alerted = models.BooleanField(default=False)
     premium_end_alerted = models.BooleanField(default=False)
+
+    form_state = models.CharField(
+        max_length=2,
+        choices=QuestionState.choices,
+        null=True,
+        blank=True,
+        default=None,
+    )
+
+    current_subscribe_type = models.CharField(max_length=100, null=True, blank=True)
     
 
     def __str__(self) -> str:

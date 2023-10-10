@@ -1,7 +1,11 @@
+import re
+
+from urllib.parse import quote
+
 import requests
 
 from bot.consts import URL
-from bot.models import Settings, Profile, Order, Tariff
+from bot.models import Settings, Profile, Order, Tariff, QuestionState
 from bot.consts import GROUP_ID
 
 
@@ -110,6 +114,10 @@ def send_channel_info(chat_id):
                     'callback_data': f'/subscribe_2'
                 }],
                 [{
+                    'text': settings.buy_group_year_btn,
+                    'callback_data': f'/subscribe_4'
+                }],
+                [{
                     'text': 'Назад',
                     'callback_data': f'/start'
                 }],
@@ -211,6 +219,16 @@ def send_about_group_message(chat_id):
     r = requests.post(URL + '/sendMessage', json = req)
     print(r)
 
+def ask_for_phone(chat_id):
+    settings = Settings.objects.first()
+    req = {
+        'chat_id': chat_id, 
+        'text': settings.enter_your_phone,
+        'parse_mode': 'HTML',
+    }
+    r = requests.post(URL + '/sendMessage', json = req)
+    print(r)
+
 
 def send_subscribe_link(chat_id, user_telegram_username, text):
 
@@ -218,11 +236,17 @@ def send_subscribe_link(chat_id, user_telegram_username, text):
     profile, _ = Profile.objects.get_or_create(user_id=chat_id)
     profile.username = user_telegram_username
     profile.save()
+    if not profile.phone:
+        profile.form_state = QuestionState.PHONE_INPUT
+        profile.current_subscribe_type = text
+        profile.save()
+        ask_for_phone(chat_id)
+        return
     subscribe_type = int(text.split('_')[1])
     order = Order.objects.create(profile=profile, subscribe_type=subscribe_type)
     tariff = Tariff.objects.get(number=subscribe_type)
-    product_info = f"products[0][quantity]=1&products[0][name]={tariff.name}&customer_extra={tariff.name}&do=pay"
-    payment_link = f"""https://mileryus.payform.ru/?order_id=order-{order.id}&customer_phone=79998887755&products[0][price]={tariff.price}&{product_info}"""
+    product_info = f"products[0][quantity]=1&products[0][name]={quote(tariff.name)}&customer_extra={tariff.name}&do=pay"
+    payment_link = f"""https://mileryus.payform.ru/?order_id=order-{order.id}&customer_phone={profile.phone}&products[0][price]={tariff.price}&{product_info}"""
     print(payment_link)
     msg = ''
     btn_text = 'оплатить'
@@ -231,8 +255,12 @@ def send_subscribe_link(chat_id, user_telegram_username, text):
     elif subscribe_type == 2:
         msg = settings.group_msg
     elif subscribe_type == 3:
+        # подписка канал + группа, отменили
+        return
         msg = settings.check_list_text
         btn_text = settings.buy_check_list_btn_text
+    elif subscribe_type == 4:
+        msg = settings.group_year_msg
     r = requests.post(URL + '/sendMessage', json = {
         'chat_id': chat_id, 
         'text': msg,
@@ -300,3 +328,29 @@ def send_doc(chat_id):
 
     req, url =  format_complex_message(req, url, settings.buy_check_list_text)
     requests.post(url, json = req)
+
+def validate_phone_number(phone_number):
+    pattern = r'^\d{11}$'
+    match = re.match(pattern, phone_number)
+
+    if match:
+        return True
+    else:
+        return False
+
+def proccess_user_text(chat_id, user_telegram_username, text):
+    settings = Settings.objects.first()
+    try:
+        profile = Profile.objects.get(user_id=chat_id)
+    except:
+        return
+    if profile.form_state == QuestionState.PHONE_INPUT:
+        if not validate_phone_number(text):
+            ask_for_phone(chat_id)
+            return
+        profile.phone = text
+        profile.form_state = None
+        profile.save()
+        send_subscribe_link(chat_id, user_telegram_username, profile.current_subscribe_type)
+    else:
+        print('мы вас не поняли')

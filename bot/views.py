@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from bot.register_hook import register_webhook
 from bot.check_callbacks import check_callbacks
 from bot.send_message import (send_start_message, send_pure_text_message, send_subscribe_link, send_invite_link_message, send_doc, send_about_message,
-                                send_channel_info, send_buy_channel, send_channel_msg, send_about_group_message)
+                                send_channel_info, send_buy_channel, send_channel_msg, send_about_group_message, proccess_user_text)
 
 from bot.models import Order, Settings
 
@@ -53,7 +53,15 @@ def prodamus_webhook(request):
         send_invite_link_message(settings.invite_message_channel, order.profile.user_id, invite_link)
         
         profile.premium_bought_to = datetime.now() + timedelta(days=1*30)
-
+    
+    elif order.subscribe_type == 4:
+        unban_user(order.profile.user_id, CHANNEL_ID)
+        invite_link = invite_link_user(CHANNEL_ID)['result']['invite_link']
+        print(invite_link)
+        send_invite_link_message(settings.invite_message_channel, order.profile.user_id, invite_link)
+        
+        profile.premium_bought_to = datetime.now() + timedelta(days=1*365)
+    
     elif order.subscribe_type == 2:
         unban_user(order.profile.user_id, CHANNEL_ID)
         invite_link = invite_link_user(CHANNEL_ID)['result']['invite_link']
@@ -136,5 +144,5 @@ def webhook(request):
     elif '/subscribe_' in text: 
         send_subscribe_link(chat_id, user_telegram_username, text)
     else:
-        pass
+        proccess_user_text(chat_id, user_telegram_username, text)
     return JsonResponse({'status': 'ok'})
