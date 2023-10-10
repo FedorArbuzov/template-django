@@ -109,10 +109,11 @@ def send_channel_info(chat_id):
                     'text': settings.buy_channel_btn,
                     'callback_data': f'/subscribe_1'
                 }],
-                [{
-                    'text': settings.buy_group_btn,
-                    'callback_data': f'/subscribe_2'
-                }],
+                # заказчик попросил скрыть
+                # [{
+                #     'text': settings.buy_group_btn,
+                #     'callback_data': f'/subscribe_2'
+                # }],
                 [{
                     'text': settings.buy_group_year_btn,
                     'callback_data': f'/subscribe_4'
