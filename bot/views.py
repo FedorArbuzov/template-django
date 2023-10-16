@@ -98,10 +98,11 @@ def prodamus_webhook(request):
 def webhook(request):   
     
     json_data = json.loads(request.body)
-    json_data = check_callbacks(json_data)
 
     if 'message' not in json_data:
         return JsonResponse({'status': 'ok'})
+    json_data = check_callbacks(json_data)
+
     chat_id = json_data['message']['chat']['id']
     user_telegram_username = json_data['message']['chat']['username']
     print(chat_id)
