@@ -99,7 +99,7 @@ def webhook(request):
     
     json_data = json.loads(request.body)
 
-    if 'message' not in json_data:
+    if 'message' not in json_data or 'callback_query' not in json_data:
         return JsonResponse({'status': 'ok'})
     json_data = check_callbacks(json_data)
 
