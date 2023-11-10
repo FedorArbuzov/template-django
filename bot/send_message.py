@@ -64,7 +64,6 @@ def send_start_message(chat_id):
                     'text': settings.channel_btn_text,
                     'callback_data': f'/channel'
                 }],
-                заказчик попросил скрыть
                 [{
                     'text': settings.check_list_btn_text,
                     'callback_data': f'/subscribe_3'
