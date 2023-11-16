@@ -44,7 +44,8 @@ def prodamus_webhook(request):
     profile = order.profile
     settings = Settings.objects.first()
     if order.subscribe_type == 3:
-        # отправка чек-листа
+        # отправка чек-листа (пока отключаем)
+        return JsonResponse({'status': 'ok'})
         send_doc(profile.user_id)
     elif order.subscribe_type == 1:
         unban_user(order.profile.user_id, CHANNEL_ID)
