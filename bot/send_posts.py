@@ -1,4 +1,5 @@
 import copy
+import time
 from multiprocessing.dummy import Pool as ThreadPool
 
 import requests
@@ -12,9 +13,17 @@ def make_request(data):
     url = data['url']
     data.pop('url', None)
     print(data['chat_id'])
-    r = requests.post(url, json = data)
-    print(r.status_code)
-    print('send_posts_to_groups')
+    while True:
+        try:
+            r = requests.post(url, json=data)
+            print(r.status_code)
+            print('send_posts_to_groups')
+            print('Message sent successfully')
+            break
+        except Exception as e:
+            print(f'An error occurred: {e}')
+            print('Retrying in 5 seconds...')
+            time.sleep(5)
 
 
 def send_posts_to_groups(content):
