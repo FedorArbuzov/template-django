@@ -18,7 +18,6 @@ def make_request(data):
             r = requests.post(url, json=data)
             print(r.status_code)
             print('send_posts_to_groups')
-            print('Message sent successfully')
             break
         except Exception as e:
             print(f'An error occurred: {e}')
@@ -32,6 +31,7 @@ def send_posts_to_groups(content):
     workers = Profile.objects.all()
     req = {
         'chat_id': '123',
+        'parse_mode': 'Markdown'
     }
     req, url = format_complex_message(req, url, content)
     for chuck in [workers[i:i+10] for i in range(0,len(workers),10)]:
