@@ -64,11 +64,10 @@ def send_start_message(chat_id):
                     'text': settings.channel_btn_text,
                     'callback_data': f'/channel'
                 }],
-                # скрываем пока
-                # [{
-                #     'text': settings.check_list_btn_text,
-                #     'callback_data': f'/subscribe_3'
-                # }],
+                [{
+                    'text': settings.check_list_btn_text,
+                    'callback_data': f'/subscribe_3'
+                }],
             ]
         }
     }
@@ -109,7 +108,6 @@ def send_channel_info(chat_id):
                     'text': settings.buy_channel_btn,
                     'callback_data': f'/subscribe_1'
                 }],
-                # заказчик попросил скрыть
                 # [{
                 #     'text': settings.buy_group_btn,
                 #     'callback_data': f'/subscribe_2'
@@ -256,8 +254,7 @@ def send_subscribe_link(chat_id, user_telegram_username, text):
     elif subscribe_type == 2:
         msg = settings.group_msg
     elif subscribe_type == 3:
-        # чек-лист, пока отменяем
-        return
+        # чек-лист
         msg = settings.check_list_text
         btn_text = settings.buy_check_list_btn_text
     elif subscribe_type == 4:
