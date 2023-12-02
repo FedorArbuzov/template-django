@@ -245,8 +245,8 @@ def send_subscribe_link(chat_id, user_telegram_username, text):
     order = Order.objects.create(profile=profile, subscribe_type=subscribe_type)
     tariff = Tariff.objects.get(number=subscribe_type)
     product_info = f"products[0][quantity]=1&products[0][name]={quote(tariff.name)}&customer_extra={tariff.name}&do=pay"
-    payment_link = f"""https://mileryus.payform.ru/?order_id=order-{order.id}&customer_phone={profile.phone}&products[0][price]={tariff.price}&{product_info}"""
-    print(payment_link)
+    sys = "mileryus"
+    payment_link = f"""https://mileryus.payform.ru/?sys={sys}&client_id={profile.user_id}&order_id=order-{order.id}&customer_phone={profile.phone}&products[0][price]={tariff.price}&{product_info}"""
     msg = ''
     btn_text = 'оплатить'
     if subscribe_type == 1:

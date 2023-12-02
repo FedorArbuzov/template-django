@@ -34,10 +34,12 @@ def invite_link_user(id):
 def prodamus_webhook(request):   
     data = request.body.decode('utf-8')
     order_id = None
+    binding_id = None
     for item in data.split('&'):
         if 'order_num=' in item:
             order_id = int(item.split('-')[1])
-            break
+        if 'binding_id' in item:
+            binding_id = item.split('=')[1]
     order = Order.objects.get(id=order_id)
     order.paid = True
     order.save()
@@ -53,6 +55,7 @@ def prodamus_webhook(request):
         send_invite_link_message(settings.invite_message_channel, order.profile.user_id, invite_link)
         
         profile.premium_bought_to = datetime.now() + timedelta(days=1*30)
+        profile.binding_id = binding_id
     
     elif order.subscribe_type == 4:
         unban_user(order.profile.user_id, CHANNEL_ID)
@@ -61,7 +64,8 @@ def prodamus_webhook(request):
         send_invite_link_message(settings.invite_message_channel, order.profile.user_id, invite_link)
         
         profile.premium_bought_to = datetime.now() + timedelta(days=1*365)
-    
+        profile.binding_id = binding_id
+
     elif order.subscribe_type == 2:
         unban_user(order.profile.user_id, CHANNEL_ID)
         invite_link = invite_link_user(CHANNEL_ID)['result']['invite_link']

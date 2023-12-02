@@ -107,6 +107,7 @@ class Profile(models.Model):
     premium_bought_to = models.DateField(blank=True, null=True)
     premium_ending_alerted = models.BooleanField(default=False)
     premium_end_alerted = models.BooleanField(default=False)
+    binding_id = models.CharField(default=None, max_length=100, null=True, blank=True)  
 
     form_state = models.CharField(
         max_length=2,
