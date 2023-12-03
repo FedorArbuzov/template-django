@@ -57,7 +57,8 @@ def prodamus_webhook(request):
         send_invite_link_message(settings.invite_message_channel, order.profile.user_id, invite_link)
         
         profile.premium_bought_to = datetime.now() + timedelta(days=1*30)
-        profile.binding_id = binding_id
+        if binding_id:
+            profile.binding_id = binding_id
         get_pay(profile.user_id, order.subscribe_type, schedule=timedelta(minutes=10))
     
     elif order.subscribe_type == 4:
@@ -67,7 +68,8 @@ def prodamus_webhook(request):
         send_invite_link_message(settings.invite_message_channel, order.profile.user_id, invite_link)
         
         profile.premium_bought_to = datetime.now() + timedelta(days=1*365)
-        profile.binding_id = binding_id
+        if binding_id:
+            profile.binding_id = binding_id
         get_pay(profile.user_id, order.subscribe_type, schedule=timedelta(days=365))
 
     elif order.subscribe_type == 2:
