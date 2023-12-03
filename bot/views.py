@@ -14,6 +14,8 @@ from bot.models import Order, Settings
 
 from bot.consts import GROUP_ID, CHANNEL_ID, URL
 
+from bot.get_recurent_pay import get_pay
+
 
 register_webhook()
 
@@ -56,6 +58,7 @@ def prodamus_webhook(request):
         
         profile.premium_bought_to = datetime.now() + timedelta(days=1*30)
         profile.binding_id = binding_id
+        get_pay(profile.user_id, order.subscribe_type, schedule=timedelta(days=30))
     
     elif order.subscribe_type == 4:
         unban_user(order.profile.user_id, CHANNEL_ID)
@@ -65,6 +68,7 @@ def prodamus_webhook(request):
         
         profile.premium_bought_to = datetime.now() + timedelta(days=1*365)
         profile.binding_id = binding_id
+        get_pay(profile.user_id, order.subscribe_type, schedule=timedelta(days=365))
 
     elif order.subscribe_type == 2:
         unban_user(order.profile.user_id, CHANNEL_ID)

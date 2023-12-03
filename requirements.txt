@@ -1,4 +1,5 @@
 Django
 requests
 python-telegram-bot
+django-background-tasks
 openai
