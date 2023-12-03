@@ -1,5 +1,5 @@
 from background_task import background
-from models import Profile, Order, Tariff
+from bot.models import Profile, Order, Tariff
 
 from collections.abc import MutableMapping
 from urllib.parse import urlencode
