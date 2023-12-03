@@ -58,7 +58,7 @@ def prodamus_webhook(request):
         
         profile.premium_bought_to = datetime.now() + timedelta(days=1*30)
         profile.binding_id = binding_id
-        get_pay(profile.user_id, order.subscribe_type, schedule=timedelta(days=30))
+        get_pay(profile.user_id, order.subscribe_type, schedule=timedelta(minutes=10))
     
     elif order.subscribe_type == 4:
         unban_user(order.profile.user_id, CHANNEL_ID)
