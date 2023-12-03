@@ -306,6 +306,15 @@ def send_invite_link_message(invite_message, chat_id, invite_link):
     })
     print(r)
 
+def send_pay_notify_message(chat_id):
+    r = requests.post(URL + '/sendMessage', json = {
+        'chat_id': chat_id, 
+        'text': 'Подписка на канал продлена',
+        'parse_mode': 'HTML',
+    })
+    print(r)
+
+
 
 def send_doc(chat_id):
     settings = Settings.objects.first()
