@@ -51,7 +51,7 @@ def prodamus_webhook(request):
         # отправка чек-листа (пока отключаем)
         send_doc(profile.user_id)
     elif order.subscribe_type == 1:
-        if profile.premium_bought_to and profile.premium_bought_to > datetime.now():
+        if profile.premium_bought_to and profile.premium_bought_to > datetime.now().date():
             # если у юзера есть дата подписки и она больше чем текущая дата, то ничего не делать, иначе скинуть ссылку
             pass
         else:
@@ -66,7 +66,7 @@ def prodamus_webhook(request):
         get_pay(profile.user_id, order.subscribe_type, schedule=timedelta(minutes=5))
     
     elif order.subscribe_type == 4:
-        if profile.premium_bought_to and profile.premium_bought_to > datetime.now():
+        if profile.premium_bought_to and profile.premium_bought_to > datetime.now().date():
             # если у юзера есть дата подписки и она больше чем текущая дата, то ничего не делать, иначе скинуть ссылку
             pass
         else:
