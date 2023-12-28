@@ -64,10 +64,10 @@ def send_start_message(chat_id):
                     'text': settings.channel_btn_text,
                     'callback_data': f'/channel'
                 }],
-                [{
-                    'text': settings.check_list_btn_text,
-                    'callback_data': f'/subscribe_3'
-                }],
+                # [{
+                #     'text': settings.check_list_btn_text,
+                #     'callback_data': f'/subscribe_3'
+                # }],
             ]
         }
     }
@@ -112,10 +112,10 @@ def send_channel_info(chat_id):
                 #     'text': settings.buy_group_btn,
                 #     'callback_data': f'/subscribe_2'
                 # }],
-                [{
-                    'text': settings.buy_group_year_btn,
-                    'callback_data': f'/subscribe_4'
-                }],
+                # [{
+                #     'text': settings.buy_group_year_btn,
+                #     'callback_data': f'/subscribe_4'
+                # }],
                 [{
                     'text': 'Назад',
                     'callback_data': f'/start'

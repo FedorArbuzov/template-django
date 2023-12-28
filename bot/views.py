@@ -47,10 +47,10 @@ def prodamus_webhook(request):
     order.save()
     profile = order.profile
     settings = Settings.objects.first()
-    if order.subscribe_type == 3:
-        # отправка чек-листа (пока отключаем)
-        send_doc(profile.user_id)
-    elif order.subscribe_type == 1:
+    # if order.subscribe_type == 3:
+    #     # отправка чек-листа (пока отключаем)
+    #     send_doc(profile.user_id)
+    if order.subscribe_type == 1:
         if profile.premium_bought_to and profile.premium_bought_to > datetime.now().date():
             # если у юзера есть дата подписки и она больше чем текущая дата, то ничего не делать, иначе скинуть ссылку
             send_pay_notify_message(order.profile.user_id)
@@ -65,20 +65,20 @@ def prodamus_webhook(request):
             profile.binding_id = binding_id
         get_pay(profile.user_id, order.subscribe_type, schedule=timedelta(hours=24*30-14))
     
-    elif order.subscribe_type == 4:
-        if profile.premium_bought_to and profile.premium_bought_to > datetime.now().date():
-            # если у юзера есть дата подписки и она больше чем текущая дата, то ничего не делать, иначе скинуть ссылку
-            send_pay_notify_message(order.profile.user_id)
-        else:
-            unban_user(order.profile.user_id, CHANNEL_ID)
-            invite_link = invite_link_user(CHANNEL_ID)['result']['invite_link']
-            print(invite_link)
-            send_invite_link_message(settings.invite_message_channel, order.profile.user_id, invite_link)
+    # elif order.subscribe_type == 4:
+    #     if profile.premium_bought_to and profile.premium_bought_to > datetime.now().date():
+    #         # если у юзера есть дата подписки и она больше чем текущая дата, то ничего не делать, иначе скинуть ссылку
+    #         send_pay_notify_message(order.profile.user_id)
+    #     else:
+    #         unban_user(order.profile.user_id, CHANNEL_ID)
+    #         invite_link = invite_link_user(CHANNEL_ID)['result']['invite_link']
+    #         print(invite_link)
+    #         send_invite_link_message(settings.invite_message_channel, order.profile.user_id, invite_link)
             
-        profile.premium_bought_to = datetime.now() + timedelta(days=1*365)
-        if binding_id:
-            profile.binding_id = binding_id
-        get_pay(profile.user_id, order.subscribe_type, schedule=timedelta(hours=24*365-14))
+    #     profile.premium_bought_to = datetime.now() + timedelta(days=1*365)
+    #     if binding_id:
+    #         profile.binding_id = binding_id
+    #     get_pay(profile.user_id, order.subscribe_type, schedule=timedelta(hours=24*365-14))
 
     elif order.subscribe_type == 2:
         unban_user(order.profile.user_id, CHANNEL_ID)
