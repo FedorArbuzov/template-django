@@ -127,6 +127,38 @@ def send_channel_info(chat_id):
     print(r)
 
 
+def send_goods_info(chat_id):
+    settings = Settings.objects.first()
+    req = {
+        'chat_id': chat_id, 
+        'text': settings.buy_check_list_btn_text,
+        'parse_mode': 'HTML',
+        'reply_markup': {
+            'inline_keyboard': 
+            [
+                # [{
+                #     'text': settings.buy_channel_btn,
+                #     'callback_data': f'/subscribe_1'
+                # }],
+                [{
+                    'text': "Гайд «Дорогое лицо» — 3300 руб",
+                    'callback_data': f'/subscribe_5'
+                }],
+                [{
+                    'text': "Гайд + приложение к Дорогому лицу — 3850 руб",
+                    'callback_data': f'/subscribe_6'
+                }],
+                [{
+                    'text': 'Назад',
+                    'callback_data': f'/start'
+                }],
+            ]
+        }
+    }
+    r = requests.post(URL + '/sendMessage', json = req)
+    print(r)
+
+
 def send_buy_channel(chat_id):
     settings = Settings.objects.first()
     req = {
@@ -259,6 +291,9 @@ def send_subscribe_link(chat_id, user_telegram_username, text):
         btn_text = settings.buy_check_list_btn_text
     elif subscribe_type == 4:
         msg = settings.group_year_msg
+    elif subscribe_type == 5 or subscribe_type == 6:
+        msg = "Оформление покупки"
+        btn_text = "Купить"
     r = requests.post(URL + '/sendMessage', json = {
         'chat_id': chat_id, 
         'text': msg,

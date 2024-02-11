@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from bot.register_hook import register_webhook
 from bot.check_callbacks import check_callbacks
-from bot.send_message import (send_start_message, send_pure_text_message, send_subscribe_link, send_invite_link_message, send_doc, send_about_message,
+from bot.send_message import (send_start_message, send_pure_text_message, send_subscribe_link, send_invite_link_message, send_doc, send_about_message, send_goods_info,
                                 send_channel_info, send_buy_channel, send_channel_msg, send_about_group_message, proccess_user_text, send_pay_notify_message)
 
 from bot.models import Order, Settings
@@ -147,6 +147,9 @@ def webhook(request):
     elif text == '/about':
         print('about')
         send_about_message(chat_id)
+    elif text == '/buy_goods':
+        print('buy_goods')
+        send_goods_info(chat_id)
     elif text == '/channel':
         print('channel')
         send_channel_info(chat_id)
