@@ -145,7 +145,7 @@ def send_goods_info(chat_id):
                     'callback_data': f'/subscribe_5'
                 }],
                 [{
-                    'text': "Гайд + приложение к Дорогому лицу — 3850 руб",
+                    'text': "Гайд + приложение — 3850 руб",
                     'callback_data': f'/subscribe_6'
                 }],
                 [{
@@ -370,6 +370,49 @@ def send_doc(chat_id):
 
     req, url =  format_complex_message(req, url, settings.buy_check_list_text)
     requests.post(url, json = req)
+
+
+def send_guide(chat_id):
+    settings = Settings.objects.first()
+    url = URL
+    req = {
+        'chat_id': chat_id, 
+        "reply_markup": {
+            "inline_keyboard": [
+                [
+                    {
+                        'text': 'Главная',
+                        'callback_data': '/start'
+                    }
+                ],
+            ]
+        }
+    }
+    text = 'Гайд "Дорогое лицо" document:BQACAgIAAxkBAALdB2XJLFp9EhXwOLk8JO3lWr7AyA_OAAK5PwACUgRRSmH6rqmce5qZNAQ'
+    req, url =  format_complex_message(req, url, text)
+    requests.post(url, json = req)
+
+
+def send_guide_plus(chat_id):
+    settings = Settings.objects.first()
+    url = URL
+    req = {
+        'chat_id': chat_id, 
+        "reply_markup": {
+            "inline_keyboard": [
+                [
+                    {
+                        'text': 'Главная',
+                        'callback_data': '/start'
+                    }
+                ],
+            ]
+        }
+    }
+    text = 'Гайд "Дорогое лицо" + приложение document:BQACAgIAAxkBAALdCWXJLVsGnKY2m5xtVNMNLwGziXm2AALLPwACUgRRSlSk2-npA0gcNAQ'
+    req, url =  format_complex_message(req, url, text)
+    requests.post(url, json = req)
+
 
 def validate_phone_number(phone_number):
     pattern = r'^\d{11}$'

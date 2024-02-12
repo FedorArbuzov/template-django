@@ -7,7 +7,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 from bot.register_hook import register_webhook
 from bot.check_callbacks import check_callbacks
-from bot.send_message import (send_start_message, send_pure_text_message, send_subscribe_link, send_invite_link_message, send_doc, send_about_message, send_goods_info,
+from bot.send_message import (send_start_message, send_pure_text_message, send_subscribe_link, send_invite_link_message, send_doc, 
+                              send_about_message, send_goods_info, send_guide, send_guide_plus,
                                 send_channel_info, send_buy_channel, send_channel_msg, send_about_group_message, proccess_user_text, send_pay_notify_message)
 
 from bot.models import Order, Settings
@@ -47,9 +48,15 @@ def prodamus_webhook(request):
     order.save()
     profile = order.profile
     settings = Settings.objects.first()
-    # if order.subscribe_type == 3:
-    #     # отправка чек-листа (пока отключаем)
-    #     send_doc(profile.user_id)
+    if order.subscribe_type == 3:
+        # отправка чек-листа (пока отключаем)
+        send_doc(profile.user_id)
+    if order.subscribe_type == 5:
+        # отправка чек-листа (пока отключаем)
+        send_guide(profile.user_id)
+    if order.subscribe_type == 6:
+        # отправка чек-листа (пока отключаем)
+        send_guide_plus(profile.user_id)
     if order.subscribe_type == 1:
         if profile.premium_bought_to and profile.premium_bought_to > datetime.now().date():
             # если у юзера есть дата подписки и она больше чем текущая дата, то ничего не делать, иначе скинуть ссылку
