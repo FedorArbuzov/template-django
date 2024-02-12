@@ -291,8 +291,21 @@ def send_subscribe_link(chat_id, user_telegram_username, text):
         btn_text = settings.buy_check_list_btn_text
     elif subscribe_type == 4:
         msg = settings.group_year_msg
-    elif subscribe_type == 5 or subscribe_type == 6:
-        msg = "Оформление покупки"
+    elif subscribe_type == 5:
+        msg = """Гайд «Дорогое лицо» — 3.300₽
+
+Нажимая на кнопку "Купить" и отправляя данные формы, Вы принимаете условия <a href='https://disk.yandex.ru/i/8BR_7WMy2CJZSw'>публичной оферты</a> и соглашаетесь с <a href='https://disk.yandex.ru/i/Yiafa2cOOqJUCg'>политикой конфиденциальности</a>.
+
+P.S. Если возникли вопросы — пишите @NatashaMiler.
+"""
+        btn_text = "Купить"
+    elif subscribe_type == 6:
+        msg = """Гайд + приложение к «Дорогому лицу» — 3.850₽
+
+Нажимая на кнопку "Купить" и отправляя данные формы, Вы принимаете условия <a href='https://disk.yandex.ru/i/8BR_7WMy2CJZSw'>публичной оферты</a> и соглашаетесь с <a href='https://disk.yandex.ru/i/Yiafa2cOOqJUCg'>политикой конфиденциальности</a>.
+
+P.S. Если возникли вопросы — пишите @NatashaMiler.
+"""
         btn_text = "Купить"
     r = requests.post(URL + '/sendMessage', json = {
         'chat_id': chat_id, 
