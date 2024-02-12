@@ -296,7 +296,7 @@ def send_subscribe_link(chat_id, user_telegram_username, text):
 
 Нажимая на кнопку "Купить" и отправляя данные формы, Вы принимаете условия <a href='https://disk.yandex.ru/i/8BR_7WMy2CJZSw'>публичной оферты</a> и соглашаетесь с <a href='https://disk.yandex.ru/i/Yiafa2cOOqJUCg'>политикой конфиденциальности</a>.
 
-P.S. Если возникли вопросы — пишите @NatashaMiler.
+P.S. Если возникли вопросы — пишите @gooryacheev.
 """
         btn_text = "Купить"
     elif subscribe_type == 6:
@@ -304,7 +304,7 @@ P.S. Если возникли вопросы — пишите @NatashaMiler.
 
 Нажимая на кнопку "Купить" и отправляя данные формы, Вы принимаете условия <a href='https://disk.yandex.ru/i/8BR_7WMy2CJZSw'>публичной оферты</a> и соглашаетесь с <a href='https://disk.yandex.ru/i/Yiafa2cOOqJUCg'>политикой конфиденциальности</a>.
 
-P.S. Если возникли вопросы — пишите @NatashaMiler.
+P.S. Если возникли вопросы — пишите @gooryacheev.
 """
         btn_text = "Купить"
     r = requests.post(URL + '/sendMessage', json = {
